@@ -11,11 +11,12 @@
 #include <time.h>
 #include <sys/wait.h>
 
-// mencatat log activity
+// mencatat program log activity
 void write_log(const char *format, ...) {
     FILE *logfile = fopen("activity.log", "a");
     if (!logfile) return;
 
+    // mencatat setiap penggunaan program ke activity.log
     time_t now = time(NULL);
     struct tm *t = localtime(&now);
     fprintf(logfile, "[%02d-%02d-%04d][%02d:%02d:%02d] - ",
@@ -31,6 +32,7 @@ void write_log(const char *format, ...) {
     fclose(logfile);
 }
 
+// mendefinisikan proses execvp dan fork
 void run_process(char *args[]) {
     pid_t pid = fork();
     if (pid == 0) {
@@ -46,13 +48,13 @@ void run_process(char *args[]) {
     }
 }
 
-
+// mendownload dan unzip file
 void download_and_unzip() {
     printf("Mengunduh file dari Google Drive...\n");
 
     pid_t pid1 = fork();
     if (pid1 == 0) {
-        // Proses anak untuk wget
+        // proses untuk wget
         char *wget_args[] = {
             "wget", "-O", "starterkit.zip",
             "https://drive.usercontent.google.com/download?id=1_5GxIGfQr3mNKuavJbte_AoRkEQLXSKS&confirm=t",
@@ -65,7 +67,7 @@ void download_and_unzip() {
         perror("fork wget gagal");
         return;
     } else {
-        // Tunggu wget selesai
+        // tunggu wget selesai
         waitpid(pid1, NULL, 0);
     }
 
@@ -79,7 +81,7 @@ void download_and_unzip() {
 
     pid_t pid2 = fork();
     if (pid2 == 0) {
-        // Proses anak untuk unzip
+        // proses untuk unzip file
         char *unzip_args[] = {
             "unzip", "-q", "starterkit.zip", "-d", "starter_kit",
             NULL
@@ -91,15 +93,16 @@ void download_and_unzip() {
         perror("fork unzip gagal");
         return;
     } else {
-        // Tunggu unzip selesai
+        // menunggu unzip selesai
         waitpid(pid2, NULL, 0);
     }
 
+    // menghapus file dari sistem
     remove("starterkit.zip");
     printf("Selesai!\n");
 }
 
- 
+// memeriksa apakah ada string yang valid dalam base64 
 int is_base64(const char *str) {
     while (*str) {
         if (!(isalnum(*str) || *str == '+' || *str == '/' || *str == '='))
@@ -312,4 +315,3 @@ int main(int argc, char *argv[]) {
 
     return 0;
 }
-
