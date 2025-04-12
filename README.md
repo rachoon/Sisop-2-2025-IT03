@@ -149,7 +149,7 @@ printf("PID: %s | Cmd: %-15s | RAM: %5lu KB | CPU: %.2f s\n",
 <p>Print keseluruhan informasi.<br>
 nanti hasil outputnya seperti ini
 </p>
-<img src="">
+<img src="https://github.com/user-attachments/assets/dd05aa1b-4c1b-4c6e-b021-b019ecbc0eab">
 
 
 <h3>4B.</h3>
@@ -208,3 +208,4 @@ void run_daemon(const char *username) {
     }
 }
 ```
+capek jir ntr tak lanjut mo malming sek
