@@ -25,3 +25,20 @@
   </tbody>
 </table>
 
+<nav>
+  <ul>
+    <li><a href="#soal1">Soal1</a></li>
+    <li><a href="#soal2">Soal2</a></li>
+    <li><a href="#soal3">Soal3</a></li>
+    <li><a href="#soal4">Soal4</a></li>
+  </ul>
+</nav>
+
+
+  <h2 id="soal1">Soal1</h2>
+
+  <h2 id="soal2">Soal2</h2>
+
+  <h2 id="soal3">Soal3</h2>
+
+  <h2 id="soal4">Soal4</h2>
