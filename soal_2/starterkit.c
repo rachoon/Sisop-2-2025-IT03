@@ -71,7 +71,7 @@ void download_and_unzip() {
         waitpid(pid1, NULL, 0);
     }
 
-    // Cek dan buat folder starter_kit jika belum ada
+    // ngejek dan buat folder starter_kit jika belum ada
     struct stat st = {0};
     if (stat("starter_kit", &st) == -1) {
         mkdir("starter_kit", 0700);
