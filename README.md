@@ -146,4 +146,65 @@ Keduanya dijumlahkan menjadi total_time.</p>
 printf("PID: %s | Cmd: %-15s | RAM: %5lu KB | CPU: %.2f s\n",
        entry->d_name, name, vsize, cpu_usage);
 ```
-<p>Print keseluruhan informasi.</p>
+<p>Print keseluruhan informasi.<br>
+nanti hasil outputnya seperti ini
+</p>
+<img src="">
+
+
+<h3>4B.</h3>
+
+```c
+void run_daemon(const char *username) {
+    pid_t pid = fork();
+    if (pid < 0) exit(EXIT_FAILURE);
+    if (pid > 0) {
+        printf("Debugmon daemon started (PID: %d)\n", pid);
+        FILE *f = fopen(PID_FILE, "w");
+        if (f) {
+            fprintf(f, "%d", pid);
+            fclose(f);
+        }
+        exit(0);
+    }
+
+    setsid(); // detach from terminal
+
+    uid_t uid = get_uid(username);
+
+    while (1) {
+        DIR *proc = opendir("/proc");
+        if (!proc) continue;
+
+        struct dirent *entry;
+        while ((entry = readdir(proc)) != NULL) {
+            if (!isdigit(entry->d_name[0])) continue;
+
+            char path[256], name[100] = "";
+            uid_t proc_uid = -1;
+            snprintf(path, sizeof(path), "/proc/%s/status", entry->d_name);
+
+            FILE *fp = fopen(path, "r");
+            if (!fp) continue;
+
+            char line[256];
+            while (fgets(line, sizeof(line), fp)) {
+                if (strncmp(line, "Name:", 5) == 0)
+                    sscanf(line, "Name:\t%99s", name);
+                if (strncmp(line, "Uid:", 4) == 0) {
+                    sscanf(line, "Uid:\t%d", &proc_uid);
+                    break;
+                }
+            }
+            fclose(fp);
+
+            if (proc_uid == uid) {
+                write_log(name, "RUNNING");
+            }
+        }
+
+        closedir(proc);
+        sleep(5);
+    }
+}
+```
