@@ -23,6 +23,7 @@ void write_log(const char *format, ...) {
             t->tm_mday, t->tm_mon + 1, t->tm_year + 1900,
             t->tm_hour, t->tm_min, t->tm_sec);
 
+    // menulis log dengan format yang ada
     va_list args;
     va_start(args, format);
     vfprintf(logfile, format, args);
@@ -71,7 +72,7 @@ void download_and_unzip() {
         waitpid(pid1, NULL, 0);
     }
 
-    // ngejek dan buat folder starter_kit jika belum ada
+    // ngecek dan buat folder starter_kit jika belum ada
     struct stat st = {0};
     if (stat("starter_kit", &st) == -1) {
         mkdir("starter_kit", 0700);
