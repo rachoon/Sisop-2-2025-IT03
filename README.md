@@ -45,12 +45,15 @@
 
 <p>
   Pada soal ini kita diminta untuk membuat sebuah program dalam bahasa c yang memiliki beberapa fitur yaitu: <br>
-  1. list program yang sedang berjalan pada komputer user. <br>
-  2. Daemon untuk meencatat log program yang sedang berjalan. <br>
-  3. Fitur untuk mematikan daemon sebelumnya. <br>
-  4. Program untuk menggagalkan semua proses yang sedang berjalan dan menulis status proses ke dalam file log dengan status FAILED. <br>
-  5. Fitur untuk mengembalikan komputer seperti awal. <br>
-  6. Mencatat semua aktivitas di file log.
+  A. list program yang sedang berjalan pada komputer user. <br>
+  B. Daemon untuk meencatat log program yang sedang berjalan. <br>
+  C. Fitur untuk mematikan daemon sebelumnya. <br>
+  D. Program untuk menggagalkan semua proses yang sedang berjalan dan menulis status proses ke dalam file log dengan status FAILED. <br>
+  E. Fitur untuk mengembalikan komputer seperti awal. <br>
+  F. Mencatat semua aktivitas di file log.
 </p>
 
 <h3>4A.</h3>
+
+```
+
