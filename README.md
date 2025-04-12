@@ -208,4 +208,59 @@ void run_daemon(const char *username) {
     }
 }
 ```
-capek jir ntr tak lanjut mo malming sek
+<p>Fungsi ini menjalankan daemon bernama "Debugmon", yang bertugas memantau proses milik user tertentu dan mencatatnya ke log jika sedang berjalan.</p>
+
+```c
+pid_t pid = fork();
+if (pid < 0) exit(EXIT_FAILURE);         // Jika gagal fork, keluar dengan error
+if (pid > 0) {
+    printf("Debugmon daemon started (PID: %d)\n", pid);
+    FILE *f = fopen(PID_FILE, "w");      // Simpan PID child ke file PID_FILE
+    if (f) {
+        fprintf(f, "%d", pid);
+        fclose(f);
+    }
+    exit(0);                             // Proses parent keluar
+}
+```
+
+<p>Fungsi fork() memisahkan proses menjadi parent dan child.
+Parent mencetak PID dan menyimpan ke file, lalu keluar.
+Child lanjut berjalan sebagai daemon. </p>
+
+```c
+while (1) {
+    DIR *proc = opendir("/proc");
+    if (!proc) continue;
+while ((entry = readdir(proc)) != NULL) {
+    if (!isdigit(entry->d_name[0])) continue;
+```
+
+<p>Pada bagian ini program akan embuka direktori /proc yang berisi info semua proses di sistem Linux.
+Jika gagal buka, lanjut ke iterasi berikutnya.
+Setelah itu program akan mengiterasi Proses dalam /proc.</p>
+
+```c
+char path[256], name[100] = "";
+uid_t proc_uid = -1;
+snprintf(path, sizeof(path), "/proc/%s/status", entry->d_name);
+
+FILE *fp = fopen(path, "r");
+if (!fp) continue;
+
+char line[256];
+while (fgets(line, sizeof(line), fp)) {
+    if (strncmp(line, "Name:", 5) == 0)
+        sscanf(line, "Name:\t%99s", name);
+    if (strncmp(line, "Uid:", 4) == 0) {
+        sscanf(line, "Uid:\t%d", &proc_uid);
+        break;
+    }
+}
+fclose(fp);
+```
+<p>Pada bagian ini program akan membuka file /proc/<pid>/status untuk baca informasi proses, lalu mengambil informasi <br>
+Name: nama program/proses. <br>
+Uid: UID dari pemilik proses.</p>
+
+<h3>4C.</h3>
