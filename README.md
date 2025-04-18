@@ -51,6 +51,60 @@
 
   </p>
   <h3>Download dan unzip sebuah starterkit</h3>
+```c
+  void download_and_unzip() {
+    printf("Mengunduh file dari Google Drive...\n");
+
+    pid_t pid1 = fork();
+    if (pid1 == 0) {
+        // proses untuk wget
+        char *wget_args[] = {
+            "wget", "-O", "starterkit.zip",
+            "https://drive.usercontent.google.com/download?id=1_5GxIGfQr3mNKuavJbte_AoRkEQLXSKS&confirm=t",
+            NULL
+        };
+        execvp(wget_args[0], wget_args);
+        perror("execvp wget gagal");
+        exit(EXIT_FAILURE);
+    } else if (pid1 < 0) {
+        perror("fork wget gagal");
+        return;
+    } else {
+        // tunggu wget selesai
+        waitpid(pid1, NULL, 0);
+    }
+
+    // ngecek dan buat folder starter_kit jika belum ada
+    struct stat st = {0};
+    if (stat("starter_kit", &st) == -1) {
+        mkdir("starter_kit", 0700);
+    }
+
+    printf("Mengekstrak starterkit.zip ke folder starter_kit...\n");
+
+    pid_t pid2 = fork();
+    if (pid2 == 0) {
+        // proses untuk unzip file
+        char *unzip_args[] = {
+            "unzip", "-q", "starterkit.zip", "-d", "starter_kit",
+            NULL
+        };
+        execvp(unzip_args[0], unzip_args);
+        perror("execvp unzip gagal");
+        exit(EXIT_FAILURE);
+    } else if (pid2 < 0) {
+        perror("fork unzip gagal");
+        return;
+    } else {
+        // menunggu unzip selesai
+        waitpid(pid2, NULL, 0);
+    }
+
+    // menghapus file dari sistem
+    remove("starterkit.zip");
+    printf("Selesai!\n");
+}
+```
 
   <h3>Membuat directory karantina yang dapat mendecrypt nama file menggunakan algoritma base64</h3>
 
