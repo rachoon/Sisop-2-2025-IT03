@@ -105,6 +105,33 @@
     remove("starterkit.zip");
     printf("Selesai!\n");
 }
+
+// mendefinisikan proses execvp dan fork
+void run_process(char *args[]) {
+    pid_t pid = fork();
+    if (pid == 0) {
+        execvp(args[0], args);
+        perror("execvp gagal");
+        exit(EXIT_FAILURE);
+    } else if (pid < 0) {
+        perror("fork gagal");
+        exit(EXIT_FAILURE);
+    } else {
+        int status;
+        waitpid(pid, &status, 0);
+    }
+}
+```
+
+<p>
+Fungsi tersebut untuk mendownload dan unzip file yang sudah di download. Seteleha file berhasil didonwload, file zip akan otomatis terhabus. Fungsi tersebut juga bisa untuk mengekstrak isi file tersebut ke dalam file starter kit. <br>
+
+Output yang akan dihasilkan adalah 
+
+```c
+Mengunduh file dari Google Drive...
+Mengekstrak starterkit.zip ke folder starter_kit...
+Selesai!
 ```
 
   <h3>Membuat directory karantina yang dapat mendecrypt nama file menggunakan algoritma base64</h3>
@@ -192,6 +219,9 @@ void daemon_decrypt() {
     }
 ```
 
+<p>
+Fungsi dari kode tersebut adalah decode nama file dan menecek apakah ada string yang terdiri dari base64 valid. Fungsi ini juga untuk membuat fie bernama "quarantine". file bernama "daemon.pid" untuk melacak PID daemon.
+
   <h3>Memindahkan file yang ada pada directory starter kit ke karantina dan sebaliknya</h3>
 
 ```c
@@ -246,6 +276,22 @@ void return_files() {
 }
 ```
 
+<p>
+Fungsi dari kode tersebut adalah untuk memindahkan semua file yang ada di "starter_kit" ke folder "quarantine". Kode tersebut juga berfungsi untuk mengembalikkan semua file yang ada di folder "quarantine" ke folder "starter_kit" kembali. <br>
+
+  Output dari kode tersebut jika berhasil memindahkan file ke "quarantine" adalah
+
+```c
+Semua file dari starter_kit dipindah ke quarantine.
+```
+
+Output dari kode tersebut jika berhasil mengembalikkan file ke "starter_kit" adalah
+
+```c
+Semua file telah dikembalikan ke starter_kit.
+```
+  
+
   <h3>Menghapus seluruh file yang ada pada directory karantina</h3>
   
 ```c
@@ -274,6 +320,22 @@ void eradicate_quarantine() {
     printf("%d file berhasil dihapus dari quarantine.\n", deleted);
 }
 ```
+
+<p>
+Fungsi dari kode tersebut adalah menghapus file yang ada di folder "quarantine" menggunakan opendir(). <br>
+
+Output yang dihasilkan ketika gagal menghapus file adalah 
+
+```c
+quarantine tidak ditemukan
+```
+
+<p>
+Output yang dihasilkan jika berhasil menghapus file dari "quarantine" adalah
+
+```c
+file berhasil dihapus dari quarantine
+```
   
   <h3>Mematikan program decrypt secara aman berdasarkan PID dri proses tersebut</h3>
 
@@ -301,6 +363,22 @@ void shutdown_daemon() {
         perror("Gagal menghentikan proses daemon");
     }
 }
+```
+
+<p>
+File ini berisi PID dari proses daemon yang dijalankan sebelumnya. <br>
+
+Ouput yang dihasilkan jika gagal mematikan program adalah
+
+```c
+Tidak dapat menemukan daemon.pid (mungkin daemon tidak berjalan?)
+```
+
+<p>
+Output yang dihasilkan jika berhasil mematikan program adalah
+
+```c
+Proses daemon dengan PID ... berhasil dihentikan.
 ```
 
   <h3>Membuat error handling</h3>
@@ -337,6 +415,16 @@ int main(int argc, char *argv[]) {
 }
 ```
 
+<p>
+Fungsi dari kode tersebut adalah memberikan petunjuk untuk menjalan program yang ada. <br>
+
+  Output yang akan terjadi adalah 
+
+```c
+ERROR: Anda harus memberikan argumen yang valid.
+Penggunaan: ./starterkit [--download | --decrypt | --quarantine | --return | --eradicate | --shutdown]
+```
+
   <h3>mencatat penggunaan program dan log dari setiap penggunaan, lalu menyimpannya ke dalam file bernama activity.log</h3>
 
 ```c
@@ -361,6 +449,17 @@ void write_log(const char *format, ...) {
     fprintf(logfile, "\n");
     fclose(logfile);
 }
+```
+
+<p>
+Fungsi dari kode tersebut adalah mencatat aktivitas program setiap penggunaan ke dalam file "activity.log". <br>
+
+Contoh dari isi dari activity adalah 
+
+```c
+[18-04-2025][22:23:09] - cGFzc3dvcmRfc3RlYWxlci5leGUK - Successfully moved to quarantine directory.
+[18-04-2025][22:23:09] - project_plan.docx - Successfully moved to quarantine directory.
+[18-04-2025][22:23:09] - dHJvamFuLmV4ZQo= - Successfully moved to quarantine directory.
 ```
   
   <h2 id="soal3">Soal3</h2>
