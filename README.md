@@ -39,6 +39,35 @@
 
   <h2 id="soal2">Soal2</h2>
 
+<p>
+  Pada soal ini kita diminta untuk membantu perempuan yang nolep yang bernama Kanade Yoisaki. Kita diminta untuk membantu Kanade Yoisaki dan teman temannya untuk membuat prgram dengan bahasa c dengan berbeagai fitur, yaitu: <br>
+  a. Download dan unzip sebuah starterkit. <br>
+  b. Membuat directory karantina yang dapat mendecrypt nama file menggunakan algoritma base64. <br>
+  c. Memindahkan file yang ada pada directory starter kit ke karantina dan sebaliknya. <br>
+  d. Menghapus seluruh file yang ada pada directory karantina. <br>
+  e. Mematikan program decrypt secara aman berdasarkan PID dri proses tersebut. <br>
+  f. Membuat error handling. <br>
+  g. mencatat penggunaan program dan log dari setiap penggunaan, lalu menyimpannya ke dalam file bernama activity.log.
+
+  </p>
+  <h3>Download dan unzip sebuah starterkit</h3>
+
+  <h3>Membuat directory karantina yang dapat mendecrypt nama file menggunakan algoritma base64</h3>
+
+  <h3>Memindahkan file yang ada pada directory starter kit ke karantina dan sebaliknya</h3>
+
+  <h3>Menghapus seluruh file yang ada pada directory karantina</h3>
+
+  <h3>Mematikan program decrypt secara aman berdasarkan PID dri proses tersebut</h3>
+
+  <h3>Membuat error handling</h3>
+
+  <h3>mencatat penggunaan program dan log dari setiap penggunaan, lalu menyimpannya ke dalam file bernama activity.log</h3>
+
+```c
+
+```
+  
   <h2 id="soal3">Soal3</h2>
 
   <h2 id="soal4">Soal4</h2>
